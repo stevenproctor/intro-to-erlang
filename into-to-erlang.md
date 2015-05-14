@@ -33,6 +33,13 @@
 
 ## Data Types
 
+- Immutable
+- Limited Set
+
+---
+
+## Data Types
+
 <div style="column-count: 2; -moz-column-count: 2">
 <ul>
 <li>Number</li>
@@ -44,9 +51,9 @@
 <ul>
 <li>Port Identifier</li>
 <li>Pid</li>
+<li>List</li>
 <li>Tuple</li>
 <li>Map</li>
-<li>List</li>
 </ul>
 </div>
 
@@ -54,21 +61,76 @@
 
 ## Where are my...
 
-<ul>
-<li class="fragment">Booleans?</li>
-<li class="fragment">Strings?</li>
-<li class="fragment">Custom Data Types?</li>
-</ul>
+### Booleans?
+
+Atoms. [frag=1]
+
+- [frag=2] `true`
+- [frag=3] `false`
+
+---
+
+## Where are my...
+
+### Strings?
+
+Lists of Integers. [frag=1]
+
+```erlang
+[72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100].
+% "Hello World"
+```
+[frag=2]
+
+---
+
+## Where are my...
+
+### Custom Data Types
+
+Named Tuples. [frag=1]
+
+```erlang
+{muppet, "Kermit", "frog"}.
+% {muppet,"Kermit","frog"}
+{muppet, "Fozzie", "bear"}.
+% {muppet,"Fozzie","bear"}
+```
+[frag=2]
+
+---
+
+## Where are my...
+
+### Custom Data Types (cont)
+
+Records [frag=1]
+
+```erlang
+-record(muppet, {name, type}).
+```
+
+[frag=2]
+
+```erlang
+Rolf = #muppet{name="Rolf", type="Dog"}.
+% #muppet{name = "Rolf",type = "Dog"}
+```
+[frag=3]
+
+```erlang
+tuple_to_list(Rolf).
+% [muppet,"Rolf","Dog"]
+```
+[frag=4]
 
 ---
 
 ## Variables
 
-<ul>
-<li class="fragment">Not Really...</li>
-<li class="fragment">Can only be bound once</li>
-<li class="fragment">Start with a capital letter</li>
-</ul>
+- Not Really... [frag=1]
+- Can only be bound once [frag=2]
+- Start with a capital letter [frag=3]
 
 ---
 
@@ -87,144 +149,207 @@
 
 ## Pattern Matching
 
-<pre>
-<span class="fragment">
+```erlang
 1> 13 = 13.
+```
+[frag=1]
+
+```erlang
 13
-</span>
-<span class="fragment">
+```
+[frag=2]
+
+```erlang
 2> a = a.
+```
+[frag=3]
+
+```erlang
 a
-</span>
-<span class="fragment">
+```
+[frag=4]
+
+```erlang
 3> A = 13.
+```
+[frag=5]
+
+```erlang
 13
-</span>
-<span class="fragment">
+```
+[frag=6]
+
+```erlang
 4> 13 = A.
+```
+[frag=7]
+
+```erlang
 13
-</span>
-</pre>
+```
+[frag=8]
 
 ---
 
 ## Pattern Matching
 
-<pre>
-<span class="fragment">
+```erlang
 5> A = 15.
-** exception error: no match of right hand side value 15
-</span>
-<span class="fragment">
+```
+[frag=1]
+
+```erlang
+** exception error: no match of right hand
+     side value 15
+```
+[frag=2]
+
+```erlang
 6> List = [1, 2, 3].
+```
+[frag=3]
+
+```erlang
 [1,2,3]
-</span>
-</pre>
+```
+[frag=4]
 
 ---
 
 ## Pattern Matching
 
-<pre>
-<span class="fragment">
+```erlang
 7> [First, y, Third] = [x, y, z].
-</span>
-<span class="fragment">
+```
+[frag=1]
+
+```erlang
 [x,y,z]
-</span>
-<span class="fragment">
+```
+[frag=2]
+
+```erlang
 8> First.
-</span>
-<span class="fragment">
+```
+[frag=3]
+
+```erlang
 x
-</span>
-<span class="fragment">
+```
+[frag=4]
+
+```erlang
 9> Third.
-</span>
-<span class="fragment">
+```
+[frag=5]
+
+```erlang
 z
-</span>
-</pre>
+```
+[frag=6]
 
 ---
 
 ## Pattern Matching
 
-<pre>
-<span class="fragment">
+```erlang
 10> SomeList = [Foo, Bar, Baz] = [a, b, c].
-</span>
-<span class="fragment">
+```
+[frag=1]
+
+```erlang
 [a,b,c]
-</span>
-<span class="fragment">
+```
+[frag=2]
+
+```erlang
 11> SomeList.
-</span>
-<span class="fragment">
+```
+[frag=3]
+
+```erlang
 [a,b,c]
-</span>
-</pre>
+```
+[frag=4]
 
 ---
 
 ## Pattern Matching
 
-<pre>
-<span class="fragment">
+```erlang
 12> Foo.
-</span>
-<span class="fragment">
+```
+[frag=1]
+
+```erlang
 a
-</span>
-<span class="fragment">
+```
+[frag=2]
+
+```erlang
 13> Bar.
-</span>
-<span class="fragment">
+```
+[frag=3]
+
+```erlang
 b
-</span>
-<span class="fragment">
+```
+[frag=4]
+
+```erlang
 14> Baz.
-</span>
-<span class="fragment">
+```
+[frag=5]
+
+```erlang
 c
-</span>
-</pre>
+```
+[frag=6]
+
 
 ---
 
 ## Pattern Matching
 
-<pre>
-<span class="fragment">
+```erlang
 15> [Head | Rest] = [1, 2, 3, 4, 5].
-</span>
-<span class="fragment">
+```
+[frag=1]
+
+```erlang
 [1,2,3,4,5]
-</span>
-<span class="fragment">
+```
+[frag=2]
+
+```erlang
 16> Head.
-</span>
-<span class="fragment">
+```
+[frag=3]
+
+```erlang
 1
-</span>
-<span class="fragment">
+```
+[frag=4]
+
+```erlang
 17> Rest.
-</span>
-<span class="fragment">
+```
+[frag=5]
+
+```erlang
 [2,3,4,5]
-</span>
-</pre>
+```
+[frag=6]
+
 
 ---
 
 ## Modules
 
-<ul>
-<li class="fragment">Used for name-spacing/organization</li>
-<li class="fragment">Level of code reuse</li>
-<li class="fragment">Must match with filename</li>
-<li class="fragment">Declaration is first line of file</li>
-</ul>
+- Used for name-spacing/organization [frag=1]
+- Level of code reuse [frag=2]
+- Must match with filename [frag=3]
+- Declaration is first line of file [frag=4]
 
 ---
 
@@ -238,13 +363,10 @@ c
 
 ## Exports
 
-<ul>
-<li class="fragment">Preprocessor directive to declare API of a module</li>
-<ul>
-<li class="fragment">List of function identifiers</li>
-</ul>
-<li class="fragment">Multiple export declarations are allowed</li>
-</ul>
+- Preprocessor directive to declare API of a module [frag=1]
+- List of function identifiers [frag=2]
+- Multiple export declarations are allowed [frag=3]
+
 
 ---
 
@@ -284,6 +406,8 @@ c
 
 ---
 
+my_list.erl
+
 ```erlang
 -module(my_list).
 
@@ -308,13 +432,160 @@ sum([Head | Rest], Sum) ->
 
 ---
 
-### OTP
+## Markov Chain
 
+Priming the Markov Chain
 
+- [frag=1] Parse out words
+- [frag=2] Iterate over words, and create an association between a word and the word following it
+
+---
+
+## Markov Chain
+
+Generating the Markov Chain
+
+- [frag=1] Given a word, we want to pick from the next word by probability of occurance
+- [frag=2] Keep picking words until we reach the number of words to generate
+
+---
+
+# Exercise Time!
+
+- Function to prime the Markov Chain
+- Function to generate a string of N words
+
+---
+
+# OTP
+
+---
+
+## Why OTP?
+
+OTP is a set of libraries for applying lessons learned in building distributed, asynchronous, concurrent applications with high availability
+
+---
+
+## But, First
+
+---
+
+## Actor Model
+
+- [frag=1] No Shared State
+- [frag=2] Message Passing
+  - [frag=3] Asynchronous Communication
+
+---
+
+## Actor Model
+
+Implemented via Erlang Processes [frag=1]
+
+---
+
+## Processes
+
+- Cheap
+- Isolated
+- Message Passing
+- Links and Monitors
+- Garbage Collection
+
+---
+
+## Processes
+
+### Cheap
+
+Processes are not
+
+- Platform Process
+- Threads
+
+---
+
+## Processes
+
+### Cheap
+
+Processes are
+
+- Green threads
+- Managed by the Erlang Runtime
+- Small
+- Quick to create
+
+---
+
+## Processes
+
+### Cheap
+
+> Processes are not threads.  Processes are cheap.  Ommmmm.
+>
+> -- <cite>Martin J. Logan</cite>
+---
+
+## Processes
+
+### Isolated Processes
+
+- No shared state
+- The only state they have access to is their own
+
+---
+
+## Processes
+
+### Message Passing
+
+- Mailboxes
+- Messages
+  - Must provide all the information a process would need
+    - Includes "Return addresses"
+- No View of outside world (mostly)
+  - Process registry
+- Asynchronous
+
+---
+
+## Processes
+
+### Links and Monitors
+
+- Monitors
+  - Monitor status of another process
+- Links
+  - Process is dependent on another process
+
+---
+
+## Processes
+
+### Garbage Collection
+
+Processes live on their own, and don't share state, so easy to reclaim memory when process is no longer being used.
 
 ---
 
 ## gen_server
+
+- [frag=1] Generic Server
+- [frag=2] The base behavior other OTP behaviors are built on
+- [frag=3] Takes care of the different concerns you would have to write yourself
+  - [frag=4] Handles maintaining state in your processes
+  - [frag=5] Allows for synchronous communication on top of asynchronous message passing
+
+---
+
+## gen_server
+
+Implement a behavior and expected set of callbacks
+
+```erlang
+-behavior(gen_server).
 
 %% gen_server callbacks
 -export([init/1,
@@ -323,3 +594,182 @@ sum([Head | Rest], Sum) ->
          handle_info/2,
          terminate/2,
          code_change/3]).
+```
+[frag=1]
+
+---
+
+## gen_server
+
+### init/1
+
+```erlang
+init(Args) -> {ok, State} |
+              {ok, State, Timeout} |
+              ignore |
+              {stop, Reason}
+```
+
+---
+
+## gen_server
+
+### handle_call/3
+
+```erlang
+handle_call(Request, From, State) ->
+                            {reply, Reply, State} |
+                            {reply, Reply, State, Timeout} |
+                            {noreply, State} |
+                            {noreply, State, Timeout} |
+                            {stop, Reason, Reply, State} |
+                            {stop, Reason, State}
+```
+
+---
+
+## gen_server
+
+### handle_cast/2
+
+```erlang
+handle_cast(Msg, State) -> {noreply, State} |
+                           {noreply, State, Timeout} |
+                           {stop, Reason, State}
+```
+
+---
+
+## gen_server
+
+### handle_info/2
+
+```erlang
+handle_info(Info, State) -> {noreply, State} |
+                            {noreply, State, Timeout} |
+                            {stop, Reason, State}
+```
+
+---
+
+## gen_server
+
+### terminate/2
+
+```erlang
+terminate(Reason, State) -> void()
+```
+
+---
+
+## gen_server
+
+### code_change/3
+
+```erlang
+code_change(OldVsn, State, Extra) -> {ok, NewState}
+```
+
+---
+
+# Code Time!
+
+- Start a process for a word seen
+- Add following word to state of process
+
+
+---
+
+#Let it Crash!
+
+- Supervisors
+
+---
+-
+
+## supervisor
+
+- Monitors child processes
+- Can supervise other supervisor processes
+- Handles restarting of child processes
+  - Independent or cascading
+- What happens if a child process dies
+
+---
+
+## supervisor
+
+
+```erlang
+-behaviour(supervisor).
+
+%% Supervisor callbacks
+-export([init/1]).
+```
+
+---
+
+## supervisor
+
+### init
+
+```erlang
+init(Args) -> {ok, {SupFlags, [ChildSpec]}} |
+              ignore |
+              {error, Reason}
+```
+
+---
+
+## supervisor
+
+### init - example
+
+```erlang
+init([]) ->
+        RestartStrategy = simple_one_for_one,
+        MaxRestarts = 1000,
+        MaxSecondsBetweenRestarts = 3600,
+
+        SupFlags = {RestartStrategy, MaxRestarts, MaxSecondsBetweenRestarts},
+
+        Restart = permanent,
+        Shutdown = 2000,
+        Type = worker,
+
+        Child = {markov_word, {markov_word, start_link, []},
+                          Restart, Shutdown, Type, [markov_word]},
+
+        {ok, {SupFlags, [Child]}}.
+```
+
+---
+
+## Challenges
+
+- Limit to 140 characters for a tweet
+
+---
+
+## Challenges
+
+- Read text in given a file name
+
+---
+
+## Challenges
+
+- Add in ability to clear primed text
+  - List of process ids to stop nicely?
+    - Another Process
+    - ETS tables
+    - mnesia
+  - Supervisor?
+
+---
+
+## Challenges
+
+- Go out there and have fun!!!
+
+---
