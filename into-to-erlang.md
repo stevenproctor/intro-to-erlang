@@ -7,8 +7,6 @@
 - Founder and Organizer of the Dallas/Fort Worth Erlang User Group
 - Functional Geekery (http://www.functionalgeekery.com/)
 - Planet Erlang (http://www.planeterlang.com/)
-- http://www.proctor-it.com/
-- @stevenproctor on Twitter
 
 ---
 
@@ -88,7 +86,7 @@ Lists of Integers. [frag=1]
 
 ### Custom Data Types
 
-Named Tuples. [frag=1]
+Tagged/Named Tuples. [frag=1]
 
 ```erlang
 {muppet, "Kermit", "frog"}.
@@ -450,10 +448,67 @@ Generating the Markov Chain
 
 ---
 
-# Exercise Time!
+# Code Time!
 
-- Function to prime the Markov Chain
-- Function to generate a string of N words
+- Function to add a word to list of following words
+- Function to pick the next word
+  - Pick a random word from a list of words
+
+---
+
+### src/markov_generator.erl
+
+```
+tokenize(Text) ->
+    string:tokens(Text, " \t\n").
+```
+
+---
+
+### src/markov_generator.erl
+
+```
+parse_text(Text) ->
+    [FirstWord | Words] = tokenize(Text),
+    load_words(FirstWord, Words).
+```
+
+---
+
+### src/markov_generator.erl
+
+```
+load_words(_Word, []) ->
+    ok;
+load_words(Word, [Following | Words]) ->
+    markov_word:add_following_word(Word, Following),
+    load_words(Following, Words).
+```
+
+---
+
+### src/markov_generator.erl
+
+```
+add_word_to_list(Words, Word) ->
+    [Word | Words].
+```
+
+---
+
+```
+pick_next_word(Words) ->
+    pick_random(Words).
+```
+
+---
+
+```
+pick_random(List) ->
+    Length = length(List),
+    Index = random:uniform(Length),
+    lists:nth(Index, List).
+```
 
 ---
 
@@ -672,11 +727,114 @@ code_change(OldVsn, State, Extra) -> {ok, NewState}
 
 ---
 
+## gen_server
+
+### Calling a gen_server Synchronously
+
+```
+call(ServerRef, Request) -> Reply
+call(ServerRef, Request, Timeout) -> Reply
+```
+
+---
+
+## gen_server
+
+### Calling a gen_server Asynchronously
+
+```
+cast(ServerRef, Request) -> ok
+```
+
+---
+
+## gen_server
+
+### Creating a API for you gen_server
+
+- Why?
+  - [frag=1] How would your client know your ServerRef?
+  - [frag=2] What if you change your Request format?
+  - [frag=3] All consumers would need to know format
+
+---
+
+## gen_server
+
+### Creating a API for you gen_server
+
+```
+-export([add_following_word/1]).
+
+
+add_following_word(Word, FollowingWord) ->
+    WordPid = find_process_for_word(Word),
+    gen_server:call(WordPid, {add_following_word, FollowingWord}).
+```
+
+---
+
 # Code Time!
 
+- Generate a reference for a process for a word
 - Start a process for a word seen
 - Add following word to state of process
 
+---
+
+## Generate a reference for a word
+
+### src/markov_word.erl
+
+```
+find_process_for_word(Word) ->
+    WordKey = get_registered_name_for_word(Word),
+    case whereis(WordKey) of
+        undefined -> register_word(WordKey);
+        Pid when is_pid(Pid) -> Pid
+    end.
+```
+
+---
+
+### src/markov_word.erl
+
+```
+add_following_word(Word, FollowingWord) ->
+    WordPid = find_process_for_word(Word),
+    gen_server:call(WordPid, {add_following_word, FollowingWord}).
+```
+
+---
+
+### src/markov_word.erl
+
+```
+pick_next_word_after(Word) ->
+    WordPid = find_process_for_word(Word),
+    gen_server:call(WordPid, {pick_next_word}).
+```
+
+---
+
+### src/markov_word.erl
+
+```
+handle_call({add_following_word, Word}, _From, #state{following_words=FollowingWords}) ->
+        NewState = #state{following_words=add_word_to_list(FollowingWords, Word)},
+        {reply, ok, NewState};
+handle_call({pick_next_word}, _From, State=#state{following_words=FollowingWords}) ->
+        Reply = pick_next_word(FollowingWords),
+        {reply, Reply, State}.
+```
+
+---
+
+## Starting a process for a word
+```
+start_link(WordKey) when is_atom(WordKey) ->
+    gen_server:start_link({local, WordKey}, ?MODULE, [], []).
+```
 
 ---
 
@@ -685,7 +843,6 @@ code_change(OldVsn, State, Extra) -> {ok, NewState}
 - Supervisors
 
 ---
--
 
 ## supervisor
 
@@ -745,9 +902,50 @@ init([]) ->
 
 ---
 
+## supervisor
+
+### restart strategies
+
+- one_for_one
+- one_for_all
+- rest_for_one
+- simple_one_for_one
+
+---
+
+# Code Time!
+
+- Start a process for a word seen
+- Add following word to state of process
+
+---
+
+### src/markov_word.erl
+
+```
+register_word(Word) ->
+    {ok, Pid} = markov_word_sup:start_child(Word),
+    Pid.
+```
+
+---
+
+# Questions?
+
+---
+
+# Contact me
+
+- @stevenproctor on Twitter
+- steven.proctor@gmail.com
+- http://www.proctor-it.com/
+
+---
+
 ## Challenges
 
 - Limit to 140 characters for a tweet
+  - Limit to characters or words (tagged tuple)
 
 ---
 
