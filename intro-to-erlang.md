@@ -19,6 +19,57 @@
 
 ---
 
+# Code Time!
+
+---
+
+## The Erlang Shell
+
+```
+$ erl
+Erlang/OTP 17 [erts-6.2.1] [source] [64-bit] [smp:8:8] [async-threads:10] [hipe] [kernel-poll:false] [dtrace]
+
+Eshell V6.2.1  (abort with ^G)
+1>
+```
+
+---
+
+## The Erlang Shell
+### Quitting
+
+```
+1>
+User switch command
+ --> ?
+  c [nn]            - connect to job
+  i [nn]            - interrupt job
+  k [nn]            - kill job
+  j                 - list all jobs
+  s [shell]         - start local shell
+  r [node [shell]]  - start remote shell
+  q                 - quit erlang
+  ? | h             - this message
+ -->
+```
+
+---
+
+## The Erlang Shell
+### Quitting
+
+```
+$ erl
+Erlang/OTP 17 [erts-6.2.1] [source] [64-bit] [smp:8:8] [async-threads:10] [hipe] [kernel-poll:false] [dtrace]
+
+Eshell V6.2.1  (abort with ^G)
+1> q().
+ok
+2> $
+```
+
+---
+
 ## Small Syntax
 
 - Predefined Data Types a.k.a Terms
@@ -931,6 +982,15 @@ register_word(Word) ->
 ---
 
 # Questions?
+
+---
+
+# Resources
+
+- Designing for Scalability with Erlang/OTP
+  - By Francesco Cesarini, Steve Vinoski
+- Erlang and OTP in Action
+  - By Martin Logan, Eric Merritt, and Richard Carlsson
 
 ---
 
