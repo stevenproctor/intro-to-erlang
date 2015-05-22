@@ -19,7 +19,7 @@
 
 ---
 
-# Code Time!
+# Quick Detour!
 
 ---
 
@@ -43,7 +43,7 @@ $ erl
 Erlang/OTP 17 [erts-6.2.1] [source] [64-bit] [smp:8:8] [async-threads:10] [hipe] [kernel-poll:false] [dtrace]
 
 Eshell V6.2.1  (abort with ^G)
-11>
+1>
 User switch command
  --> ?
   c [nn]            - connect to job
@@ -71,6 +71,10 @@ Eshell V6.2.1  (abort with ^G)
 ok
 2> $
 ```
+
+---
+
+# Detour Over
 
 ---
 
@@ -118,8 +122,15 @@ ok
 
 Atoms. [frag=1]
 
-- [frag=2] `true`
-- [frag=3] `false`
+```
+true
+```
+[frag=2]
+
+```
+false
+```
+[frag=3]
 
 ---
 
@@ -162,18 +173,17 @@ Records [frag=1]
 ```erlang
 -record(muppet, {name, type}).
 ```
-
 [frag=2]
 
 ```erlang
 Rolf = #muppet{name="Rolf", type="Dog"}.
-% #muppet{name = "Rolf",type = "Dog"}
+% #muppet{name = "Rolf", type = "Dog"}
 ```
 [frag=3]
 
 ```erlang
 tuple_to_list(Rolf).
-% [muppet,"Rolf","Dog"]
+% [muppet, "Rolf", "Dog"]
 ```
 [frag=4]
 
@@ -408,6 +418,8 @@ c
 
 ## Modules
 
+my_erlang_project/src/markov_chain.erl
+
 ```erlang
 -module(markov_chain).
 ```
@@ -426,6 +438,8 @@ c
 ## Exports
 
 ```erlang
+-module(my_math).
+
 -export([sum/1]).
 ```
 
@@ -459,6 +473,8 @@ c
 
 ---
 
+## Functions
+
 my_list.erl
 
 ```erlang
@@ -474,6 +490,10 @@ sum([], Sum) ->
 sum([Head | Rest], Sum) ->
     sum(Rest, Sum + Head).
 ```
+
+---
+
+# Markov Chains
 
 ---
 
@@ -503,8 +523,27 @@ Generating the Markov Chain
 
 ---
 
+## Markov Chain
+
+### Application Structure Overview
+
+```
+$ ls src/
+markov.app.src
+markov_app.erl
+markov_sup.erl
+markov_generator_sup.erl
+markov_generator.erl
+markov_word_sup.erl
+markov_word.erl
+markov.erl
+```
+
+---
+
 # Code Time!
 
+- Quick Application structure overview
 - Function to add a word to list of following words
 - Function to pick the next word
   - Pick a random word from a list of words
