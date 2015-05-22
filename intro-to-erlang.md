@@ -39,7 +39,11 @@ Eshell V6.2.1  (abort with ^G)
 ### Quitting
 
 ```
-1>
+$ erl
+Erlang/OTP 17 [erts-6.2.1] [source] [64-bit] [smp:8:8] [async-threads:10] [hipe] [kernel-poll:false] [dtrace]
+
+Eshell V6.2.1  (abort with ^G)
+11>
 User switch command
  --> ?
   c [nn]            - connect to job
