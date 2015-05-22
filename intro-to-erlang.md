@@ -10,8 +10,15 @@
 
 ---
 
-## Background
+## About You
 
+- [frag=1] Functional Programming Experience?
+- [frag=2] Erlang Experience?
+  - [frag=3] Elixir?
+
+---
+
+## Background
 
 - Created by Joe Armstrong, Robert Virding, and Mike Williams
 - Born in Ericsson for telecom switches in 1986
@@ -475,6 +482,8 @@ my_erlang_project/src/markov_chain.erl
 
 ## Functions
 
+### Defining Functions
+
 my_list.erl
 
 ```erlang
@@ -489,6 +498,27 @@ sum([], Sum) ->
     Sum;
 sum([Head | Rest], Sum) ->
     sum(Rest, Sum + Head).
+```
+
+---
+
+## Functions
+
+### Calling a Function
+
+```
+my_list:sum([1, 2, 3, 4, 5]).
+```
+
+---
+
+## Functions
+
+### Unused Arguments
+
+```erlang
+some_function(_Head, []) ->
+    ok;
 ```
 
 ---
@@ -590,12 +620,16 @@ add_word_to_list(Words, Word) ->
 
 ---
 
+### src/markov_word.erl
+
 ```
 pick_next_word(Words) ->
     pick_random(Words).
 ```
 
 ---
+
+### src/markov_word.erl
 
 ```
 pick_random(List) ->
@@ -613,6 +647,8 @@ pick_random(List) ->
 ## Why OTP?
 
 OTP is a set of libraries for applying lessons learned in building distributed, asynchronous, concurrent applications with high availability
+
+\#BuzzwordBingo [frag=1]
 
 ---
 
@@ -857,13 +893,16 @@ cast(ServerRef, Request) -> ok
 
 ### Creating a API for you gen_server
 
+src/markov_word.erl
+
 ```
 -export([add_following_word/1]).
 
 
 add_following_word(Word, FollowingWord) ->
     WordPid = find_process_for_word(Word),
-    gen_server:call(WordPid, {add_following_word, FollowingWord}).
+    gen_server:call(WordPid, {add_following_word,
+                              FollowingWord}).
 ```
 
 ---
@@ -896,7 +935,8 @@ find_process_for_word(Word) ->
 ```
 add_following_word(Word, FollowingWord) ->
     WordPid = find_process_for_word(Word),
-    gen_server:call(WordPid, {add_following_word, FollowingWord}).
+    gen_server:call(WordPid, {add_following_word,
+                              FollowingWord}).
 ```
 
 ---
@@ -914,12 +954,15 @@ pick_next_word_after(Word) ->
 ### src/markov_word.erl
 
 ```
-handle_call({add_following_word, Word}, _From, #state{following_words=FollowingWords}) ->
-        NewState = #state{following_words=add_word_to_list(FollowingWords, Word)},
-        {reply, ok, NewState};
-handle_call({pick_next_word}, _From, State=#state{following_words=FollowingWords}) ->
-        Reply = pick_next_word(FollowingWords),
-        {reply, Reply, State}.
+handle_call({add_following_word, Word}, _From,
+             #state{following_words=FollowingWords}) ->
+    NewState = #state{following_words=
+                     add_word_to_list(FollowingWords, Word)},
+    {reply, ok, NewState};
+handle_call({pick_next_word}, _From,
+            State=#state{following_words=FollowingWords}) ->
+    Reply = pick_next_word(FollowingWords),
+    {reply, Reply, State}.
 ```
 
 ---
@@ -978,20 +1021,22 @@ init(Args) -> {ok, {SupFlags, [ChildSpec]}} |
 
 ```erlang
 init([]) ->
-        RestartStrategy = simple_one_for_one,
-        MaxRestarts = 1000,
-        MaxSecondsBetweenRestarts = 3600,
+    RestartStrategy = simple_one_for_one,
+    MaxRestarts = 1000,
+    MaxSecondsBetweenRestarts = 3600,
 
-        SupFlags = {RestartStrategy, MaxRestarts, MaxSecondsBetweenRestarts},
+    SupFlags = {RestartStrategy,
+                MaxRestarts,
+                MaxSecondsBetweenRestarts},
 
-        Restart = permanent,
-        Shutdown = 2000,
-        Type = worker,
+    Restart = permanent,
+    Shutdown = 2000,
+    Type = worker,
 
-        Child = {markov_word, {markov_word, start_link, []},
-                          Restart, Shutdown, Type, [markov_word]},
+    Child = {markov_word, {markov_word, start_link, []},
+                   Restart, Shutdown, Type, [markov_word]},
 
-        {ok, {SupFlags, [Child]}}.
+    {ok, {SupFlags, [Child]}}.
 ```
 
 ---
@@ -1010,7 +1055,6 @@ init([]) ->
 # Code Time!
 
 - Start a process for a word seen
-- Add following word to state of process
 
 ---
 
@@ -1030,6 +1074,8 @@ register_word(Word) ->
 
 # Resources
 
+- Complete App
+  - https://github.com/stevenproctor/markov-erlang
 - Designing for Scalability with Erlang/OTP
   - By Francesco Cesarini, Steve Vinoski
 - Erlang and OTP in Action
@@ -1042,6 +1088,13 @@ register_word(Word) ->
 - @stevenproctor on Twitter
 - steven.proctor@gmail.com
 - http://www.proctor-it.com/
+
+---
+
+## Share your learnings
+
+- Planet Erlang
+  - http://www.planeterlang.com/
 
 ---
 
