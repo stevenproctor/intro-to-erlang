@@ -592,9 +592,10 @@ tokenize(Text) ->
 ### src/markov_generator.erl
 
 ```
-parse_text(Text) ->
+handle_call({parse_text, Text}, _From, State) ->
     [FirstWord | Words] = tokenize(Text),
-    load_words(FirstWord, Words).
+    load_words(FirstWord, Words),
+    {reply, ok, State}.
 ```
 
 ---
@@ -611,7 +612,7 @@ load_words(Word, [Following | Words]) ->
 
 ---
 
-### src/markov_generator.erl
+### src/markov_word.erl
 
 ```
 add_word_to_list(Words, Word) ->
@@ -896,7 +897,7 @@ cast(ServerRef, Request) -> ok
 src/markov_word.erl
 
 ```
--export([add_following_word/1]).
+-export([add_following_word/2]).
 
 
 add_following_word(Word, FollowingWord) ->
